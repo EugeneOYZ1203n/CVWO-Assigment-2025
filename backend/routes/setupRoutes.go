@@ -20,10 +20,11 @@ func SetupRoutes(app *fiber.App) {
 	api := app.Group("/api")
 	act := api.Group("/activities/:id", middleware.ValidateActivityID)
 
-	api.Get("/activities", handlers.GetActivities)     // GET /api/activities
-	act.Get("/participants", handlers.GetParticipants) // GET /api/activities/1/participants
-	act.Get("/comments", handlers.GetComments)         // GET /api/activities/1/comments
-	api.Get("/users/:username/id", handlers.GetUserID) // GET /api/users/Alice/id
+	api.Get("/activities", handlers.GetActivities)                       // GET /api/activities
+	act.Get("/participants", handlers.GetParticipants)                   // GET /api/activities/1/participants
+	act.Get("/comments", handlers.GetComments)                           // GET /api/activities/1/comments
+	api.Get("/users/:username/id", handlers.GetUserID)                   // GET /api/users/Alice/id
+	api.Get("/users/:id/activities", handlers.GetParticipatedActivities) // GET /api/users/1/activities
 
 	api.Post("/users", handlers.CreateUser)            // POST /api/users
 	act.Post("/participants", handlers.AddParticipant) // POST /api/activities/1/participants

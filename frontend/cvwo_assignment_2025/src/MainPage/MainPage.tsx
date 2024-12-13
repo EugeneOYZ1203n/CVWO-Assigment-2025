@@ -6,9 +6,12 @@ import SearchBar from './SearchBar';
 import ActivityList from './ActivityList';
 import { getActivities } from '../api/getActivities';
 import { Activity } from "../types";
+import { getParticipatedActivities } from "../api/getParticipatedActivities";
 
 const MainPage = () => {
     const [activities, setActivities] = useState<Activity[]>([]);
+    const [participated, setParticipated] = useState<number[]>([]);
+
     const [searchActivities, setSearchActivities] = useState<Activity[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
@@ -16,10 +19,13 @@ const MainPage = () => {
     const user_id = 1;
 
     useEffect(() => {
-        const fetchActivities = async () => {
+        const fetchData = async () => {
             try {
-                const data = await getActivities();  
-                setActivities(data); 
+                const activities_data = await getActivities();  
+                setActivities(activities_data); 
+
+                const participated_data = await getParticipatedActivities(user_id);  
+                setParticipated(participated_data); 
             } catch (error) {
                 console.error("Error fetching activities:", error);
             } finally {
@@ -27,7 +33,7 @@ const MainPage = () => {
             }
         };
 
-        fetchActivities();
+        fetchData();
     }, []);
 
     // Function to handle Add Activity button
@@ -47,7 +53,7 @@ const MainPage = () => {
                 <Topbar username={username} onAddActivity={handleAddActivity} />
                 <UpcomingEvents activities={activities}/>
                 <SearchBar activities={activities} setActivities={setSearchActivities}/>
-                <ActivityList activities={searchActivities} user_id={user_id}/>
+                <ActivityList activities={searchActivities} participated={participated}/>
             </VStack>
         )}
         </Box>

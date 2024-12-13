@@ -23,18 +23,19 @@ type User struct {
 }
 
 type Activity struct {
-	ActivityID      int    `json:"activity_id"`      // Unique ID for the activity
-	Title           string `json:"title"`            // Title of the activity
-	Description     string `json:"description"`      // Description of the activity
-	Category        string `json:"category"`         // Category of the activity (e.g., "Sports", "Study", etc.)
-	Location        string `json:"location"`         // Location of the activity
-	StartDate       string `json:"start_date"`       // The start date and time of the activity
-	EndDate         string `json:"end_date"`         // The end date and time of the activity
-	CreatorID       int    `json:"creator_id"`       // User ID of the creator (foreign key)
-	MaxParticipants int    `json:"max_participants"` // Maximum number of participants
-	Status          string `json:"status"`           // Status of the activity (Planning, Finalizing, etc.)
-	CreatedAt       string `json:"created_at"`       // When the activity was created
-	UpdatedAt       string `json:"updated_at"`       // When the activity was last updated
+	ActivityID       int    `json:"activity_id"`       // Unique ID for the activity
+	Title            string `json:"title"`             // Title of the activity
+	Description      string `json:"description"`       // Description of the activity
+	Category         string `json:"category"`          // Category of the activity (e.g., "Sports", "Study", etc.)
+	Location         string `json:"location"`          // Location of the activity
+	StartDate        string `json:"start_date"`        // The start date and time of the activity
+	EndDate          string `json:"end_date"`          // The end date and time of the activity
+	CreatorID        int    `json:"creator_id"`        // User ID of the creator (foreign key)
+	MaxParticipants  int    `json:"max_participants"`  // Maximum number of participants
+	Status           string `json:"status"`            // Status of the activity (Planning, Finalizing, etc.)
+	CreatedAt        string `json:"created_at"`        // When the activity was created
+	UpdatedAt        string `json:"updated_at"`        // When the activity was last updated
+	ParticipantCount int    `json:"participant_count"` // Number of participants for this activity
 }
 
 type Participant struct {

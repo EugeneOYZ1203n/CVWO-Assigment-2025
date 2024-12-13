@@ -1,15 +1,15 @@
 import React from "react";
 import { Box, VStack} from "@chakra-ui/react";
 import ActivityCard from "./ActivityCard";
-import { Activity, Participant } from "../types";
+import { Activity } from "../types";
 
 interface ActivityListProps {
     activities: Activity[];
-    user_id: number;
+    participated: number[];
   }
 
-const ActivityList : React.FC<ActivityListProps> = ({activities, user_id}) => {
-    const handleCardClick = (activity : Activity, participants : Participant[]) => {
+const ActivityList : React.FC<ActivityListProps> = ({activities, participated}) => {
+    const handleCardClick = (activity : Activity) => {
       // Open modal logic for the activity
       console.log(`Opening modal for activity ${activity.activity_id}`);
     };
@@ -26,8 +26,8 @@ const ActivityList : React.FC<ActivityListProps> = ({activities, user_id}) => {
                 <ActivityCard
                     key={activity.activity_id}
                     activity={activity}
-                    user_id={user_id}
-                    onClick={handleCardClick}
+                    isParticipant={participated.includes(activity.activity_id)}
+                    onClick={()=>handleCardClick(activity)}
                 />
             );
         })}

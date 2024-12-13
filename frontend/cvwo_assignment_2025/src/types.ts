@@ -10,6 +10,7 @@ export interface Activity {
     status: string; 
     created_at: string; // ISO 8601 format (e.g., "2024-12-12T10:00:00Z")
     updated_at: string; // ISO 8601 format (e.g., "2024-12-12T10:00:00Z")
+    participant_count: number; 
 }
   
 export interface Participant {

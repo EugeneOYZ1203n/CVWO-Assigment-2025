@@ -12,19 +12,22 @@ import (
 func GetActivities(c *fiber.Ctx) error {
 	query := `
 	SELECT 
-		activity_id, 
-		title, 
-		description, 
-		category, 
-		location, 
-		start_date, 
-		end_date, 
-		creator_id, 
-		max_participants, 
-		status, 
-		created_at, 
-		updated_at 
-	FROM activities
+		a.activity_id, 
+		a.title, 
+		a.description, 
+		a.category, 
+		a.location, 
+		a.start_date, 
+		a.end_date, 
+		a.creator_id, 
+		a.max_participants, 
+		a.status, 
+		a.created_at, 
+		a.updated_at,
+		COALESCE(COUNT(p.user_id), 0) AS participant_count
+	FROM activities a
+	LEFT JOIN participants p ON p.activity_id = a.activity_id
+	GROUP BY a.activity_id
 	`
 
 	rows, err := sqldb.DB.Query(query)
@@ -54,6 +57,7 @@ func GetActivities(c *fiber.Ctx) error {
 			&activity.Status,
 			&activity.CreatedAt,
 			&activity.UpdatedAt,
+			&activity.ParticipantCount,
 		)
 		if err != nil {
 			log.Println("Error scanning row:", err)

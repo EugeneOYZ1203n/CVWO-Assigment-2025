@@ -1,8 +1,8 @@
 import config from '../config';
 
-export const getActivities = async (): Promise<any[]> => {
+export const getParticipatedActivities = async (user_id : number): Promise<any[]> => {
   try {
-    const response = await fetch(`http://localhost:${config.backendPort}/api/activities`, {
+    const response = await fetch(`http://localhost:${config.backendPort}/api/users/${user_id}/activities`, {
       method: "GET",  // GET request to fetch activities
       headers: {
         "Content-Type": "application/json",
