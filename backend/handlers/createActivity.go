@@ -20,6 +20,7 @@ func CreateActivity(c *fiber.Ctx) error {
 		EndDate         time.Time `json:"end_date"`
 		CreatorID       int       `json:"creator_id"`
 		MaxParticipants int       `json:"max_participants"`
+		Status          string    `json:"status"`
 	}
 
 	var req CreateActivityRequest
@@ -48,9 +49,15 @@ func CreateActivity(c *fiber.Ctx) error {
 		})
 	}
 
+	if !models.AllowedStatus[req.Status] {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"error": "Invalid status. Must be one of: Planning, Finalizing, Confirmed, Completed",
+		})
+	}
+
 	insertQuery := `INSERT INTO activities (title, description, category, location, start_date, end_date, creator_id, max_participants, status) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, "Planning")`
-	_, err := sqldb.DB.Exec(insertQuery, req.Title, req.Description, req.Category, req.Location, req.StartDate, req.EndDate, req.CreatorID, req.MaxParticipants)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+	_, err := sqldb.DB.Exec(insertQuery, req.Title, req.Description, req.Category, req.Location, req.StartDate, req.EndDate, req.CreatorID, req.MaxParticipants, req.Status)
 	if err != nil {
 		log.Println("Error inserting new activity:", err)
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{

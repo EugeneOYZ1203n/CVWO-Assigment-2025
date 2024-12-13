@@ -8,6 +8,7 @@ import { getActivities } from '../api/getActivities';
 import { Activity } from "../types";
 import { getParticipatedActivities } from "../api/getParticipatedActivities";
 import ActivityDisplay from "../ActivityDisplay/ActivityDisplay";
+import ActivityForm from "../ActivityForm/ActivityForm";
 
 const MainPage = () => {
     const [activities, setActivities] = useState<Activity[]>([]);
@@ -17,6 +18,7 @@ const MainPage = () => {
     const [loading, setLoading] = useState<boolean>(true);
 
     const [displayOpen, setDisplayOpen] = useState<boolean>(false);
+    const [formOpen, setFormOpen] = useState<boolean>(false);
     const [modalActivity, setModalActivity] = useState<Activity | null>(null);
 
     const [refresh, setRefresh] = useState<boolean>(true);
@@ -42,16 +44,27 @@ const MainPage = () => {
         fetchData();
     }, [refresh]);
 
-    const handleOpenForm = (activity: Activity | null) => {
-        
+    const handleAddActivity = () => {
+        handleOpenForm(null)
+    };
+
+    const handleEditActivity = (activity: Activity) => {
+        handleOpenForm(activity)
     }
 
-    const handleAddActivity = () => {
-        console.log("Add Activity button clicked!");
-    };
+    const handleOpenForm = (activity: Activity | null) => {
+        setFormOpen(true)
+        if (displayOpen) { handleCloseDisplay() }
+        setModalActivity(activity)
+    }
+
+    const handleCloseForm = () => {
+        setFormOpen(false)
+    }
 
     const handleOpenDisplay = (activity : Activity) => {
         setDisplayOpen(true)
+        if (formOpen) { handleCloseForm() }
         setModalActivity(activity)
     }
 
@@ -75,6 +88,12 @@ const MainPage = () => {
                 {displayOpen && <ActivityDisplay 
                     activity={modalActivity!} 
                     onClose={handleCloseDisplay} 
+                    onUpdateData={refreshData}
+                    onEdit={handleEditActivity}
+                    user_id={user_id}/>}
+                {formOpen && <ActivityForm
+                    activity={modalActivity!} 
+                    onClose={handleCloseForm} 
                     onUpdateData={refreshData}
                     user_id={user_id}/>}
             </Box>

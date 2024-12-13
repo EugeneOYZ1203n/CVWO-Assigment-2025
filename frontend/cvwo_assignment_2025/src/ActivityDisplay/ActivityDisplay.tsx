@@ -18,9 +18,6 @@ import { categoryMap } from "../helper/mapTables";
 import { useEffect, useState } from "react";
 import { getParticipants } from "../api/getParticipants";
 import { getComments } from "../api/getComments";
-import { toaster } from "../components/ui/toaster";
-import { addParticipant } from "../api/addParticipant";
-import { deleteParticipant } from "../api/deleteParticipant";
 import { FiEdit } from "react-icons/fi";
 import DeleteActivityPopover from "./DeleteActivityPopover";
 import ActivityDisplayDetails from "./ActivityDisplayDetails";
@@ -31,6 +28,7 @@ interface ActivityDisplayProps {
     activity: Activity;
     onClose: () => void;
     onUpdateData: () => void;
+    onEdit: (activity:Activity) => void;
     user_id: number; // The ID of the logged-in user
 }
 
@@ -38,6 +36,7 @@ const ActivityDisplay : React.FC<ActivityDisplayProps> = ({
     activity,
     onClose,
     onUpdateData,
+    onEdit,
     user_id
 }) => {
 
@@ -78,7 +77,16 @@ const ActivityDisplay : React.FC<ActivityDisplayProps> = ({
     return (
         <DialogRoot open={true} size="xl">
             <DialogBackdrop/>
-            <DialogContent colorScheme="teal">
+            <DialogContent colorScheme="teal"
+                overflow="auto" maxH="80vh" 
+                css={{
+                // Hide scrollbar while keeping scrolling functional
+                scrollbarWidth: "none", // For Firefox
+                "-ms-overflow-style": "none", // For IE and Edge
+                "&::-webkit-scrollbar": {
+                    display: "none", // For Chrome, Safari, and Edge
+                },
+            }}>
                 <DialogHeader>
                 <HStack align="center">
                     <Text fontSize="2xl" fontWeight="bold" color="teal.600">{activity.title}</Text>
@@ -88,6 +96,7 @@ const ActivityDisplay : React.FC<ActivityDisplayProps> = ({
 
                     <IconButton
                         variant="outline" 
+                        onClick={()=>onEdit(activity)}
                         colorPalette="teal"><FiEdit /></IconButton>
                     <DeleteActivityPopover activity={activity} onClose={() => {
                         onUpdateData(); onClose(); }} />

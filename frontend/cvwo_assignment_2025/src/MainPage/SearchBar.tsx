@@ -33,9 +33,9 @@ const SearchBar : React.FC<SearchBarProps> = ({
             if (sortBy === "start_date") {
                 return new Date(a.start_date).getTime() - new Date(b.start_date).getTime();
             } else if (sortBy === "created_at") {
-                return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+                return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
             } else if (sortBy === "updated_at") {
-                return new Date(a.updated_at).getTime() - new Date(b.updated_at).getTime();
+                return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
             } else if (sortBy === "status") {
                 return (statusMap.get(a.status) ?? 0) - (statusMap.get(b.status) ?? 0);
             }

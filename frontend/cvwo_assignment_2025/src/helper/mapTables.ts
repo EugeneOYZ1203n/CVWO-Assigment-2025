@@ -39,3 +39,12 @@ export const category_types = createListCollection({
         { label: "Others", value: "Others" },
     ],
 })
+
+export const status_types = createListCollection({
+    items: [
+        { label: "Planning", value: "Planning" },
+        { label: "Finalizing", value: "Finalizing" },
+        { label: "Confirmed", value: "Confirmed" },
+        { label: "Completed", value: "Completed" },
+    ],
+})

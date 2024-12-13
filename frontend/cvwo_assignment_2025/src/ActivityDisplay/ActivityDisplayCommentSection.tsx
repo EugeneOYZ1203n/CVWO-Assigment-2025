@@ -69,7 +69,7 @@ const ActivityDisplayCommentSection:React.FC<ActivityDisplayCommentSectionProps>
 
         <VStack spaceY={2} p={2} width="full" align="stretch">
             {comments.map(comment => (
-                <CommentDisplay comment={comment} />
+                <CommentDisplay key={comment.comment_id} comment={comment} />
             ))}
         </VStack>
         </>
