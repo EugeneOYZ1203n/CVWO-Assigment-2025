@@ -1,23 +1,26 @@
 import config from '../config';
 
-export const getParticipants = async (activity_id : number): Promise<any[]> => {
+export const deleteParticipant = async (user_id: number, activity_id : number): Promise<any[]> => {
   try {
     const response = await fetch(`http://localhost:${config.backendPort}/api/activities/${activity_id}/participants`, {
-      method: "GET",  
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        user_id: user_id,
+      }),
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch participants for activity ID ${activity_id}`);
+      throw new Error(`Failed to delete participant for activity ID ${activity_id}`);
     }
 
     const data = await response.json();
     
     return data; 
   } catch (error) {
-    console.error("Error fetching participants:", error);
+    console.error("Error deleting participant:", error);
     throw error;  
   }
 };

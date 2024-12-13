@@ -1,7 +1,9 @@
 import React from 'react'
 
-import { Box, Text, VStack, HStack } from "@chakra-ui/react";
+import { Box, Text, VStack, HStack, Badge } from "@chakra-ui/react";
 import { Activity } from "../types";
+import { formatDate } from '../helper/format_date';
+import { categoryMap } from '../helper/mapTables';
 
 interface ActivityCardProps {
   activity: Activity;
@@ -14,12 +16,6 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
     isParticipant, 
     onClick 
   }) => {
-    const formatDate = (isoDate: string) => {
-        const date = new Date(isoDate);
-        const day = String(date.getDate()).padStart(2, "0");
-        const month = date.toLocaleString("en-US", { month: "short" }); // "Jan", "Feb", etc.
-        return `${day} ${month}`;
-    };
 
     const isFullCapacity = activity.participant_count === activity.max_participants
   
@@ -41,9 +37,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
                 >
                     <HStack>
                         <Text textAlign="left" fontSize="xl" fontWeight="bold" lineClamp="2">{activity.title}</Text>
-                        <Box borderRadius="10px" bg="teal.700" paddingX={2} height="20px">
-                            <Text color="white" fontSize="xs">{activity.category}</Text>
-                        </Box>
+                        <Badge colorPalette={categoryMap.get(activity.category)}>{activity.category}</Badge>
                     </HStack>
                     <Text textAlign="left" fontSize="sm" color="gray.500" lineClamp="3">{activity.description}</Text>
                     <Text textAlign="left" fontSize="sm">{activity.location}, {formatDate(activity.start_date)} - {formatDate(activity.end_date)}</Text>

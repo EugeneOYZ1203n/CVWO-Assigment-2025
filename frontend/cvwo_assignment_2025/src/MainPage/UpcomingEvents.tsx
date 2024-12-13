@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
 import { Activity } from '../types';
+import { formatDate } from "../helper/format_date";
 
 interface UpcomingEventsProps {
     activities: Activity[];
@@ -18,14 +19,6 @@ const UpcomingEvents : React.FC<UpcomingEventsProps> = ({
   }) => {
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const [isScrollable, setIsScrollable] = useState(true); // To toggle arrow visibility
-
-    // Format date to DD/MM
-    const formatDate = (isoDate: string) => {
-        const date = new Date(isoDate);
-        const day = String(date.getDate()).padStart(2, "0");
-        const month = date.toLocaleString("en-US", { month: "short" }); // "Jan", "Feb", etc.
-        return `${day} ${month}`;
-    };
 
     const scrollLeft = () => {
         if (scrollContainerRef.current) {

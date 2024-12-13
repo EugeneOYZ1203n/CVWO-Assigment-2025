@@ -7,6 +7,7 @@ import ActivityList from './ActivityList';
 import { getActivities } from '../api/getActivities';
 import { Activity } from "../types";
 import { getParticipatedActivities } from "../api/getParticipatedActivities";
+import ActivityDisplay from "../ActivityDisplay/ActivityDisplay";
 
 const MainPage = () => {
     const [activities, setActivities] = useState<Activity[]>([]);
@@ -14,6 +15,11 @@ const MainPage = () => {
 
     const [searchActivities, setSearchActivities] = useState<Activity[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+
+    const [displayOpen, setDisplayOpen] = useState<boolean>(false);
+    const [modalActivity, setModalActivity] = useState<Activity | null>(null);
+
+    const [refresh, setRefresh] = useState<boolean>(true);
 
     const username = "Alice"; 
     const user_id = 1;
@@ -34,13 +40,28 @@ const MainPage = () => {
         };
 
         fetchData();
-    }, []);
+    }, [refresh]);
 
-    // Function to handle Add Activity button
+    const handleOpenForm = (activity: Activity | null) => {
+        
+    }
+
     const handleAddActivity = () => {
         console.log("Add Activity button clicked!");
-        // Add your logic here (e.g., open a modal to create a new activity)
     };
+
+    const handleOpenDisplay = (activity : Activity) => {
+        setDisplayOpen(true)
+        setModalActivity(activity)
+    }
+
+    const handleCloseDisplay = () => {
+        setDisplayOpen(false)
+    }
+
+    const refreshData = () => {
+        setRefresh(!refresh)
+    }
 
     return (
         <Box>
@@ -49,12 +70,21 @@ const MainPage = () => {
                 <Spinner size="xl" color="teal" />
             </Center>
         ) : (
+            <>
+            <Box zIndex={10} position="fixed" left={0} top={0} width="full">
+                {displayOpen && <ActivityDisplay 
+                    activity={modalActivity!} 
+                    onClose={handleCloseDisplay} 
+                    onUpdateData={refreshData}
+                    user_id={user_id}/>}
+            </Box>
             <VStack align="stretch" w="full" p={4} spaceY={4}> 
                 <Topbar username={username} onAddActivity={handleAddActivity} />
                 <UpcomingEvents activities={activities}/>
                 <SearchBar activities={activities} setActivities={setSearchActivities}/>
-                <ActivityList activities={searchActivities} participated={participated}/>
+                <ActivityList activities={searchActivities} participated={participated} onCardClick={handleOpenDisplay}/>
             </VStack>
+            </>
         )}
         </Box>
     )

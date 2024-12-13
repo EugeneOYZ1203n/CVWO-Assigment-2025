@@ -7,6 +7,8 @@ var AllowedCategories = map[string]bool{
 	"Creative Workshops":     true,
 	"Museums and Culture":    true,
 	"Social and Group Games": true,
+	"Work and Study":         true,
+	"Others":                 true,
 }
 
 var AllowedStatus = map[string]bool{
@@ -42,7 +44,6 @@ type Participant struct {
 	ParticipantID int    `json:"participant_id"` // Unique ID for this participation record
 	UserID        int    `json:"user_id"`        // Foreign key to the user
 	ActivityID    int    `json:"activity_id"`    // Foreign key to the activity
-	Role          string `json:"role"`           // Role (Organizer or Participant)
 	Username      string `json:"user_name"`      // User's chosen username, taken from User table
 }
 

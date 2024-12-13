@@ -1,38 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Input, VStack, Box, SelectRoot, SelectValueText, SelectTrigger, SelectContent, SelectItem, createListCollection, HStack } from "@chakra-ui/react";
+import { Input, VStack, Box, SelectRoot, SelectValueText, SelectTrigger, SelectContent, SelectItem, HStack } from "@chakra-ui/react";
 import { Activity } from "../types"; // Replace with your actual activity type
+import { category_types, sort_types, statusMap } from "../helper/mapTables";
 
 interface SearchBarProps {
     activities: Activity[];
     setActivities: React.Dispatch<React.SetStateAction<Activity[]>>;
 }
-
-const sort_types = createListCollection({
-    items: [
-        { label: "Start Date", value: "start_date" },
-        { label: "Create Date", value: "created_at" },
-        { label: "Updated Date", value: "updated_at" },
-        { label: "Status", value: "status" },
-    ],
-})
-
-const statusMap: Map<string, number> = new Map([
-    ["Planning", 1],
-    ["Finalizing", 2],
-    ["Confirmed", 3],
-    ["Completed", 4]
-]);
-
-const category_types = createListCollection({
-    items: [
-        { label: "Sports and Exercise", value: "Sports and Exercise" },
-        { label: "Outdoor Adventures", value: "Outdoor Adventures" },
-        { label: "Shows and Movies", value: "Shows and Movies" },
-        { label: "Creative Workshops", value: "Creative Workshops" },
-        { label: "Museums and Culture", value: "Museums and Culture" },
-        { label: "Social and Group Games", value: "Social and Group Games" },
-    ],
-})
 
 const SearchBar : React.FC<SearchBarProps> = ({
     activities, 

@@ -17,6 +17,14 @@ export interface Participant {
     participant_id: number;
     user_id: number;
     activity_id: number;
-    role: "Organizer" | "Participant";
-    username: string
+    user_name: string;
+}
+
+export interface Comment {
+    comment_id: number;
+    activity_id: number;
+    user_id: number;
+    comment_body: string;
+    user_name: string;
+    created_at: string; // ISO 8601 format (e.g., "2024-12-12T10:00:00Z")
 }

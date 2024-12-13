@@ -20,8 +20,7 @@ func AddParticipant(c *fiber.Ctx) error {
 	}
 
 	type AddParticipantRequest struct {
-		UserID int    `json:"user_id"`
-		Role   string `json:"role"` // "Participant" or "Organizer"
+		UserID int `json:"user_id"`
 	}
 
 	var req AddParticipantRequest
@@ -32,7 +31,7 @@ func AddParticipant(c *fiber.Ctx) error {
 		})
 	}
 
-	if req.UserID <= 0 || (req.Role != "Participant" && req.Role != "Organizer") {
+	if req.UserID <= 0 {
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
 			"error": "Invalid input data",
 		})
@@ -53,9 +52,9 @@ func AddParticipant(c *fiber.Ctx) error {
 		})
 	}
 
-	query := `INSERT INTO participants (user_id, activity_id, role) VALUES (?, ?, ?);`
+	query := `INSERT INTO participants (user_id, activity_id) VALUES (?, ?);`
 
-	_, err = sqldb.DB.Exec(query, req.UserID, activityID, req.Role)
+	_, err = sqldb.DB.Exec(query, req.UserID, activityID)
 	if err != nil {
 		log.Println("Error inserting participant:", err)
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{

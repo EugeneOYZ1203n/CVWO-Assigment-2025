@@ -25,7 +25,6 @@ func GetParticipants(c *fiber.Ctx) error {
 		p.participant_id, 
 		p.activity_id, 
 		p.user_id, 
-		p.role, 
 		u.username
 	FROM participants p
 	INNER JOIN users u ON p.user_id = u.user_id
@@ -49,7 +48,6 @@ func GetParticipants(c *fiber.Ctx) error {
 			&participant.ParticipantID,
 			&participant.ActivityID,
 			&participant.UserID,
-			&participant.Role,
 			&participant.Username,
 		)
 		if err != nil {

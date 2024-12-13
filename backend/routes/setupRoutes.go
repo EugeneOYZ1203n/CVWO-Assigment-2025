@@ -31,8 +31,7 @@ func SetupRoutes(app *fiber.App) {
 	act.Post("/comments", handlers.AddComment)         // POST /api/activities/1/comments
 	api.Post("/activities", handlers.CreateActivity)   // POST /api/activities
 
-	act.Patch("", handlers.UpdateActivity)                 // PATCH /api/activities/2
-	act.Patch("/participants", handlers.UpdateParticipant) // PATCH /api/activities/2/participants
+	act.Patch("", handlers.UpdateActivity) // PATCH /api/activities/2
 
 	act.Delete("", handlers.DeleteActivity)                 // DELETE /api/activities/2
 	act.Delete("/participants", handlers.DeleteParticipant) // DELETE /api/activities/2/participants
