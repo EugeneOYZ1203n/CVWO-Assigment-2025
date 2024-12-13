@@ -10,7 +10,12 @@ import { getParticipatedActivities } from "../api/getParticipatedActivities";
 import ActivityDisplay from "../ActivityDisplay/ActivityDisplay";
 import ActivityForm from "../ActivityForm/ActivityForm";
 
-const MainPage = () => {
+interface MainPageProps {
+    username: string;
+    user_id: number;
+}
+
+const MainPage : React.FC<MainPageProps> = ({username, user_id}) => {
     const [activities, setActivities] = useState<Activity[]>([]);
     const [participated, setParticipated] = useState<number[]>([]);
 
@@ -23,9 +28,6 @@ const MainPage = () => {
 
     const [refresh, setRefresh] = useState<boolean>(true);
 
-    const username = "Alice"; 
-    const user_id = 1;
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -33,7 +35,7 @@ const MainPage = () => {
                 setActivities(activities_data); 
 
                 const participated_data = await getParticipatedActivities(user_id);  
-                setParticipated(participated_data); 
+                setParticipated(participated_data || []); 
             } catch (error) {
                 console.error("Error fetching activities:", error);
             } finally {
