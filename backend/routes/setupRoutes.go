@@ -1,21 +1,23 @@
 package routes
 
 import (
-	"os"
-
 	"github.com/EugeneOYZ1203n/CVWO-Assigment-2025/handlers"
 	"github.com/EugeneOYZ1203n/CVWO-Assigment-2025/middleware"
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 func SetupRoutes(app *fiber.App) {
-	allowedOrigins := os.Getenv("ALLOWED_ORIGINS")
+	// allowedOrigins := os.Getenv("ALLOWED_ORIGINS")
 
-	app.Use(cors.New(cors.Config{
-		AllowOrigins: allowedOrigins,          // Allow your frontend's URL in development
-		AllowMethods: "GET,POST,PATCH,DELETE", // Allow these HTTP methods
-	}))
+	app.Static("/", "./frontend")
+	app.Get("/api", func(c *fiber.Ctx) error {
+		return c.JSON(fiber.Map{"message": "API is working"})
+	})
+
+	// app.Use(cors.New(cors.Config{
+	// 	AllowOrigins: allowedOrigins,          // Allow frontend url
+	// 	AllowMethods: "GET,POST,PATCH,DELETE", // Allow these HTTP methods
+	// }))
 
 	api := app.Group("/api")
 	act := api.Group("/activities/:id", middleware.ValidateActivityID)
@@ -35,4 +37,8 @@ func SetupRoutes(app *fiber.App) {
 
 	act.Delete("", handlers.DeleteActivity)                 // DELETE /api/activities/2
 	act.Delete("/participants", handlers.DeleteParticipant) // DELETE /api/activities/2/participants
+
+	app.All("*", func(c *fiber.Ctx) error {
+		return c.SendFile("./frontend/index.html")
+	})
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"github.com/EugeneOYZ1203n/CVWO-Assigment-2025/routes"
 	"github.com/EugeneOYZ1203n/CVWO-Assigment-2025/sqldb"
@@ -16,5 +17,10 @@ func main() {
 
 	routes.SetupRoutes(app)
 
-	log.Fatal(app.Listen(":4000"))
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "4000" // Default to 3000 if running locally
+	}
+
+	log.Fatal(app.Listen(":" + port))
 }

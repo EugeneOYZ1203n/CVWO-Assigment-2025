@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"net/url"
 	"os"
 	"time"
 
@@ -13,20 +14,38 @@ import (
 
 var DB *sql.DB
 
+func getDatabaseURL() string {
+	// Get the JAWSDB_URL environment variable
+	dbURL := os.Getenv("JAWSDB_URL")
+	if dbURL == "" {
+		log.Fatal("JAWSDB_URL environment variable not set")
+	}
+
+	// Parse the URL
+	u, err := url.Parse(dbURL)
+	if err != nil {
+		log.Fatalf("Error parsing JAWSDB_URL: %v", err)
+	}
+
+	// Extract credentials
+	user := u.User.Username()
+	password, _ := u.User.Password()
+	host := u.Host
+	database := u.Path[1:] // Remove leading "/"
+
+	// Format as MySQL DSN (Data Source Name)
+	return fmt.Sprintf("%s:%s@tcp(%s)/%s?parseTime=true", user, password, host, database)
+}
+
 func SetupDatabase() {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatalf("Error loading .env file: %v", err)
 	}
 
-	// Get environment variables
-	dbUsername := os.Getenv("DB_USERNAME")
-	dbPassword := os.Getenv("DB_PASSWORD")
-	dbHost := os.Getenv("DB_HOST")
-	dbPort := os.Getenv("DB_PORT")
-	dbName := os.Getenv("DB_NAME")
+	dsn := getDatabaseURL()
 
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", dbUsername, dbPassword, dbHost, dbPort, dbName)
+	fmt.Printf("DSN for JawsDB is: %v \n", dsn)
 
 	DB, err = sql.Open("mysql", dsn)
 	if err != nil {
