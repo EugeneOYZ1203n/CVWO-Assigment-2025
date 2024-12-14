@@ -16,15 +16,15 @@ var DB *sql.DB
 
 func getDatabaseURL() string {
 	// Get the JAWSDB_URL environment variable
-	dbURL := os.Getenv("JAWSDB_URL")
+	dbURL := os.Getenv("DB_URL")
 	if dbURL == "" {
-		log.Fatal("JAWSDB_URL environment variable not set")
+		log.Fatal("DB_URL environment variable not set")
 	}
 
 	// Parse the URL
 	u, err := url.Parse(dbURL)
 	if err != nil {
-		log.Fatalf("Error parsing JAWSDB_URL: %v", err)
+		log.Fatalf("Error parsing DB_URL: %v", err)
 	}
 
 	// Extract credentials
@@ -47,7 +47,7 @@ func SetupDatabase() {
 
 	dsn := getDatabaseURL()
 
-	fmt.Printf("DSN for JawsDB is: %v \n", dsn)
+	fmt.Printf("DSN for DB is: %v \n", dsn)
 
 	DB, err := sql.Open("mysql", dsn)
 	if err != nil {
