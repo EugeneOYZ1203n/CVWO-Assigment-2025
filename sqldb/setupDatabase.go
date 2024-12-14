@@ -9,6 +9,7 @@ import (
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/joho/godotenv"
 )
 
 var DB *sql.DB
@@ -37,16 +38,16 @@ func getDatabaseURL() string {
 }
 
 func SetupDatabase() {
-	// err := godotenv.Load()
-	// if err != nil {
-	// 	log.Fatalf("Error loading .env file: %v", err)
-	// }
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("Error loading .env file: %v", err)
+	}
 
 	dsn := getDatabaseURL()
 
 	fmt.Printf("DSN for JawsDB is: %v \n", dsn)
 
-	DB, err := sql.Open("mysql", dsn)
+	DB, err = sql.Open("mysql", dsn)
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
@@ -55,6 +56,8 @@ func SetupDatabase() {
 	if err := DB.Ping(); err != nil {
 		log.Fatalf("Failed to ping database: %v", err)
 	}
+
+	fmt.Println(DB)
 
 	fmt.Println("Database connected successfully!")
 
