@@ -49,7 +49,8 @@ func SetupDatabase() {
 
 	fmt.Printf("DSN for DB is: %v \n", dsn)
 
-	DB, err := sql.Open("mysql", dsn)
+	var err error
+	DB, err = sql.Open("mysql", dsn)
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
