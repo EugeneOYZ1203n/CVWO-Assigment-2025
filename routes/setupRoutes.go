@@ -9,7 +9,7 @@ import (
 func SetupRoutes(app *fiber.App) {
 	// allowedOrigins := os.Getenv("ALLOWED_ORIGINS")
 
-	app.Static("/", "./frontend")
+	app.Static("/", "./frontend/dist")
 	app.Get("/api", func(c *fiber.Ctx) error {
 		return c.JSON(fiber.Map{"message": "API is working"})
 	})
@@ -39,6 +39,6 @@ func SetupRoutes(app *fiber.App) {
 	act.Delete("/participants", handlers.DeleteParticipant) // DELETE /api/activities/2/participants
 
 	app.All("*", func(c *fiber.Ctx) error {
-		return c.SendFile("./frontend/index.html")
+		return c.SendFile("./frontend/dist/index.html")
 	})
 }
