@@ -2,7 +2,7 @@ import config from '../config';
 
 export const addComment = async (user_id: number, comment_body: string, activity_id : number): Promise<any[]> => {
   try {
-    const response = await fetch(`http://localhost:${config.backendPort}/api/activities/${activity_id}/comments`, {
+    const response = await fetch(`${config.backendPath}/api/activities/${activity_id}/comments`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

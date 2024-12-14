@@ -2,7 +2,7 @@ import config from '../config';
 
 export const getParticipatedActivities = async (user_id : number): Promise<any[]> => {
   try {
-    const response = await fetch(`http://localhost:${config.backendPort}/api/users/${user_id}/activities`, {
+    const response = await fetch(`${config.backendPath}/api/users/${user_id}/activities`, {
       method: "GET",  
       headers: {
         "Content-Type": "application/json",

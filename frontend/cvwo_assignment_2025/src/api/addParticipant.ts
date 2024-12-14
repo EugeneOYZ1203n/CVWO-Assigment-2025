@@ -2,7 +2,7 @@ import config from '../config';
 
 export const addParticipant = async (user_id: number, activity_id : number): Promise<any[]> => {
   try {
-    const response = await fetch(`http://localhost:${config.backendPort}/api/activities/${activity_id}/participants`, {
+    const response = await fetch(`${config.backendPath}/api/activities/${activity_id}/participants`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

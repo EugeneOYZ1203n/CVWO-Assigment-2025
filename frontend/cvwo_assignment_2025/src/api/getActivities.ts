@@ -2,7 +2,7 @@ import config from '../config';
 
 export const getActivities = async (): Promise<any[]> => {
   try {
-    const response = await fetch(`http://localhost:${config.backendPort}/api/activities`, {
+    const response = await fetch(`${config.backendPath}/api/activities`, {
       method: "GET", 
       headers: {
         "Content-Type": "application/json",

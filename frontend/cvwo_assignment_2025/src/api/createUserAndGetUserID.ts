@@ -6,7 +6,7 @@ interface UserIDData {
 
 export const createUserAndGetUserID = async (username:string): Promise<UserIDData> => {
     try {
-        const response = await fetch(`http://localhost:${config.backendPort}/api/users`, {
+        const response = await fetch(`${config.backendPath}/api/users`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -31,7 +31,7 @@ export const createUserAndGetUserID = async (username:string): Promise<UserIDDat
     }
 
     try {
-        const response = await fetch(`http://localhost:${config.backendPort}/api/users/${username}/id`, {
+        const response = await fetch(`${config.backendPath}/api/users/${username}/id`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",

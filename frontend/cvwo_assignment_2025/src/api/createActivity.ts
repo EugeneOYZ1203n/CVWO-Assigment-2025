@@ -3,7 +3,7 @@ import { Activity } from '../types';
 
 export const createActivity = async (activity : Activity, user_id : number): Promise<any[]> => {
   try {
-    const response = await fetch(`http://localhost:${config.backendPort}/api/activities`, {
+    const response = await fetch(`${config.backendPath}/api/activities`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

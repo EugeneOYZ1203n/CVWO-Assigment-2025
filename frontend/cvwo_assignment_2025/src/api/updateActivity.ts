@@ -3,7 +3,7 @@ import { Activity } from '../types';
 
 export const updateActivity = async (activity : Activity): Promise<any[]> => {
   try {
-    const response = await fetch(`http://localhost:${config.backendPort}/api/activities/${activity.activity_id}`, {
+    const response = await fetch(`${config.backendPath}/api/activities/${activity.activity_id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

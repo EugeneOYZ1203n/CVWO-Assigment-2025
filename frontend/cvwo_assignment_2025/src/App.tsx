@@ -1,9 +1,13 @@
 import './App.css'
+import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import AuthPage from './AuthPage/AuthPage';
-import MainPage from './MainPage/MainPage';
 import { useState } from 'react';
 import PrivateRoute from './AuthPage/PrivateRoute';
+import { Spinner } from '@chakra-ui/react';
+
+// Lazy-load components
+const AuthPage = React.lazy(() => import('./AuthPage/AuthPage'));
+const MainPage = React.lazy(() => import('./MainPage/MainPage'));
 
 const App = () => {
   const [username, setUsername] = useState<string>("");
@@ -11,6 +15,7 @@ const App = () => {
 
   return (
     <Router>
+      <Suspense fallback={<Spinner colorPalette="teal"/>}>
       <Routes>
         <Route path="/auth" element={<AuthPage setUsername={setUsername} setUserID={setUserID} />} />
         <Route path="/" element={
@@ -18,6 +23,7 @@ const App = () => {
             <MainPage user_id={userID!} username={username}/>
           </PrivateRoute>} />
       </Routes>
+      </Suspense>
     </Router>
   )
 }

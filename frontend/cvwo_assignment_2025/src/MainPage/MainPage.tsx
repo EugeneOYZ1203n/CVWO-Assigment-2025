@@ -3,12 +3,12 @@ import { VStack, Box, Spinner, Center } from "@chakra-ui/react";
 import Topbar from './Topbar';
 import UpcomingEvents from './UpcomingEvents';
 import SearchBar from './SearchBar';
-import ActivityList from './ActivityList';
 import { getActivities } from '../api/getActivities';
 import { Activity } from "../types";
 import { getParticipatedActivities } from "../api/getParticipatedActivities";
-import ActivityDisplay from "../ActivityDisplay/ActivityDisplay";
-import ActivityForm from "../ActivityForm/ActivityForm";
+import React, { Suspense } from "react";
+
+const ActivityList = React.lazy(() => import('./ActivityList'));
 
 interface MainPageProps {
     username: string;
@@ -28,6 +28,9 @@ const MainPage : React.FC<MainPageProps> = ({username, user_id}) => {
 
     const [refresh, setRefresh] = useState<boolean>(true);
 
+    const [ActivityForm, setActivityForm] = useState<any>(null);
+    const [ActivityDisplay, setActivityDisplay] = useState<any>(null);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -45,6 +48,16 @@ const MainPage : React.FC<MainPageProps> = ({username, user_id}) => {
 
         fetchData();
     }, [refresh]);
+
+    useEffect(() => {
+        // Dynamically import the form and display to speed up load times
+        import("../ActivityDisplay/ActivityDisplay").then((module) => {
+            setActivityDisplay(() => module.default);
+        });
+        import("../ActivityForm/ActivityForm").then((module) => {
+            setActivityForm(() => module.default);
+        });
+    }, []);
 
     const handleAddActivity = () => {
         handleOpenForm(null)
@@ -87,23 +100,29 @@ const MainPage : React.FC<MainPageProps> = ({username, user_id}) => {
         ) : (
             <>
             <Box zIndex={10} position="fixed" left={0} top={0} width="full">
-                {displayOpen && <ActivityDisplay 
+                {displayOpen && (ActivityDisplay != null ? (
+                    <ActivityDisplay 
                     activity={modalActivity!} 
                     onClose={handleCloseDisplay} 
                     onUpdateData={refreshData}
                     onEdit={handleEditActivity}
-                    user_id={user_id}/>}
-                {formOpen && <ActivityForm
+                    user_id={user_id}/>
+                    ) : <Spinner alignSelf="center" colorPalette="teal"/>)}
+                {formOpen && (ActivityForm != null ? (
+                    <ActivityForm
                     activity={modalActivity!} 
                     onClose={handleCloseForm} 
                     onUpdateData={refreshData}
-                    user_id={user_id}/>}
+                    user_id={user_id}/>
+                    ) : <Spinner alignSelf="center" colorPalette="teal"/>)}
             </Box>
             <VStack align="stretch" w="full" p={4} spaceY={4}> 
                 <Topbar username={username} onAddActivity={handleAddActivity} />
                 <UpcomingEvents activities={activities}/>
                 <SearchBar activities={activities} setActivities={setSearchActivities}/>
-                <ActivityList activities={searchActivities} participated={participated} onCardClick={handleOpenDisplay}/>
+                <Suspense fallback={<Spinner alignSelf="center" colorPalette="teal"/>}>
+                    <ActivityList activities={searchActivities} participated={participated} onCardClick={handleOpenDisplay}/>
+                </Suspense>
             </VStack>
             </>
         )}

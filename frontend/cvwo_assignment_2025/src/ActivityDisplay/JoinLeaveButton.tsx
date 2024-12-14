@@ -31,6 +31,10 @@ const JoinLeaveButton : React.FC<JoinLeaveButtonProps> = ({
 
     const handleJoinActivity = async () => {
         try {
+            if (activity.participant_count === activity.max_participants) {
+                throw new Error("Activity already full!")
+            }
+
             await addParticipant(user_id, activity.activity_id)  
             onUpdateData()
             toaster.create({

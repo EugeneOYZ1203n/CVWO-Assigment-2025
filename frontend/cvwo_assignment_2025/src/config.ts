@@ -1,5 +1,5 @@
 const config = {
-    backendPort: 4000,
+    backendPath: "http://localhost:4000",
 };
 
 export default config;
