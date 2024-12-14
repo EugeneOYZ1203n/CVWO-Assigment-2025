@@ -38,16 +38,18 @@ func getDatabaseURL() string {
 }
 
 func SetupDatabase() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatalf("Error loading .env file: %v", err)
+	if os.Getenv("ENV") != "production" {
+		err := godotenv.Load()
+		if err != nil {
+			log.Fatalf("Error loading .env file: %v", err)
+		}
 	}
 
 	dsn := getDatabaseURL()
 
 	fmt.Printf("DSN for JawsDB is: %v \n", dsn)
 
-	DB, err = sql.Open("mysql", dsn)
+	DB, err := sql.Open("mysql", dsn)
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
