@@ -17,7 +17,6 @@ const ActivityDisplayDetails : React.FC<ActivityDisplayDetailsProps> = ({activit
 
     <Grid 
         templateColumns={"repeat(2, 1fr)"} 
-        width="80%"
         overflow="hidden"
     >
         <GridItem alignContent="start">

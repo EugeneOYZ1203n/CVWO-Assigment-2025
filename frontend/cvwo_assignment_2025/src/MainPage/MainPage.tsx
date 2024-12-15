@@ -92,24 +92,31 @@ const MainPage : React.FC<MainPageProps> = ({username, user_id}) => {
     }
 
     return (
-        <Box 
-            transform={{
-                base: "scale(0.9)",  // Applies to screens 0px and up
-                sm: "scale(0.95)",   // Applies to screens 480px and up
-                md: "scale(1)",      // Applies to screens 768px and up
-            }}
-            transformOrigin="top left" // Ensures scaling starts from the top-left
-            w="100vw"
-            h="100vh"
-            overflow="hidden" // Prevents accidental overflow>
-        >
+        <Box>
         {loading ? (
             <Center height="100vh">
                 <Spinner size="xl" color="teal" />
             </Center>
         ) : (
             <>
-            <Box zIndex={10} position="fixed" left={0} top={0} width="full">
+            {(displayOpen || formOpen) && <Box 
+                zIndex={10}
+                position="fixed"
+                top={0}
+                left={0}
+                width="100vw" 
+                height="100vh"
+                background= "rgba(0, 0, 0, 0.6)"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                transform={{
+                    base: "scale(0.75)",  // Applies to screens 0px and up
+                    md: "scale(1)",      // Applies to screens 768px and up
+                }}
+                transformOrigin="top center" // Ensures scaling starts from the top-left
+                overflow="hidden" // Prevents accidental overflow
+            >
                 {displayOpen && (ActivityDisplay != null ? (
                     <ActivityDisplay 
                     activity={modalActivity!} 
@@ -125,7 +132,15 @@ const MainPage : React.FC<MainPageProps> = ({username, user_id}) => {
                     onUpdateData={refreshData}
                     user_id={user_id}/>
                     ) : <Spinner alignSelf="center" colorPalette="teal"/>)}
-            </Box>
+            </Box>} 
+            <Box 
+                transform={{
+                    base: "scale(0.75)",  // Applies to screens 0px and up
+                    md: "scale(1)",      // Applies to screens 768px and up
+                }}
+                transformOrigin="top center" // Ensures scaling starts from the top-left
+                overflow="hidden" // Prevents accidental overflow
+            >
             <VStack align="stretch" w="full" p={4} spaceY={4}> 
                 <Topbar username={username} onAddActivity={handleAddActivity} />
                 <UpcomingEvents activities={activities}/>
@@ -134,6 +149,7 @@ const MainPage : React.FC<MainPageProps> = ({username, user_id}) => {
                     <ActivityList activities={searchActivities} participated={participated} onCardClick={handleOpenDisplay}/>
                 </Suspense>
             </VStack>
+            </Box>
             </>
         )}
         </Box>

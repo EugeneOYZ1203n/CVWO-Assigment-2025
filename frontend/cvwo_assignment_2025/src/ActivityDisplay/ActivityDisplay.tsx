@@ -75,32 +75,31 @@ const ActivityDisplay : React.FC<ActivityDisplayProps> = ({
     }
 
     return (
-        <DialogRoot open={true} size="xl">
+        <DialogRoot open={true} onInteractOutside={onClose} size="xl">
             <DialogBackdrop/>
             <DialogContent colorScheme="teal"
                 overflow="auto" maxH="80vh" 
                 css={{
-                "::-webkit-scrollbar": {
-                    width: "8px", // Set the scrollbar width
-                    height: "8px", // Set the scrollbar height for horizontal scrolling
-                },
-                "::-webkit-scrollbar-thumb": {
-                    backgroundColor: "teal.500", // Chakra theme color
-                    borderRadius: "4px",
-                    border: "2px solid transparent", // Optional: Space around the thumb
-                    backgroundClip: "content-box",
-                },
-                "::-webkit-scrollbar-thumb:hover": {
-                    backgroundColor: "teal.700", // Darker shade on hover
-                },
-                "::-webkit-scrollbar-track": {
-                    backgroundColor: "gray.200", // Track background color
-                    borderRadius: "4px",
-                },
+                    "&::-webkit-scrollbar": {
+                        width: "10px",
+                    },
+                    "&::-webkit-scrollbar-track": {
+                        background: "#f1f1f1",
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                        background: "teal",
+                        borderRadius: "8px",
+                    },
+                    "&::-webkit-scrollbar-thumb:hover": {
+                        background: "teal.700",
+                    },
+                    // For Firefox
+                    scrollbarWidth: "thin",
+                    scrollbarColor: "teal #f1f1f1",
             }}>
                 <DialogHeader>
                 <HStack align="center">
-                    <Text fontSize="2xl" fontWeight="bold" color="teal.600">{activity.title}</Text>
+                    <Text fontSize="2xl" fontWeight="bold" color="teal.600" textAlign="left" maxW="50%">{activity.title}</Text>
                     <Badge colorPalette={categoryMap.get(activity.category)}>{activity.category}</Badge>
 
                     <Spacer />
