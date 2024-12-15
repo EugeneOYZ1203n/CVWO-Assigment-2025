@@ -28,7 +28,7 @@ const DeleteActivityPopover : React.FC<DeleteActivityPopoverProps> = ({
             await deleteActivity(activity.activity_id) 
             onClose()
             toaster.create({
-                description: `Deleted ${activity.title}`,
+                description: `Deleted ${activity.activity_id}:${activity.title}`,
                 type: "success",
             })
         } catch (error) {

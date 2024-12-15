@@ -92,7 +92,17 @@ const MainPage : React.FC<MainPageProps> = ({username, user_id}) => {
     }
 
     return (
-        <Box>
+        <Box 
+            transform={{
+                base: "scale(0.9)",  // Applies to screens 0px and up
+                sm: "scale(0.95)",   // Applies to screens 480px and up
+                md: "scale(1)",      // Applies to screens 768px and up
+            }}
+            transformOrigin="top left" // Ensures scaling starts from the top-left
+            w="100vw"
+            h="100vh"
+            overflow="hidden" // Prevents accidental overflow>
+        >
         {loading ? (
             <Center height="100vh">
                 <Spinner size="xl" color="teal" />

@@ -220,6 +220,17 @@ const ActivityForm : React.FC<ActivityFormProps> = ({
             </SelectRoot>
           </Field>
 
+          <Field label="Location"
+            invalid={!isValidLocation} errorText={location ? "Location should be less than 100 characters!" : "Location cannot be empty!"}
+          >
+            <Input 
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                placeholder="Location goes here"
+                size="md"
+            />
+          </Field>
+
           <Field label="Start Date">
             <DateSelector 
               selectedDate={startDate}
@@ -233,17 +244,6 @@ const ActivityForm : React.FC<ActivityFormProps> = ({
             <DateSelector 
               selectedDate={endDate}
               setSelectedDate={setEndDate}
-            />
-          </Field>
-
-          <Field label="Location"
-            invalid={!location} errorText={location ? "Location should be less than 100 characters!" : "Location cannot be empty!"}
-          >
-            <Input 
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                placeholder="Location goes here"
-                size="md"
             />
           </Field>
 

@@ -38,7 +38,7 @@ const JoinLeaveButton : React.FC<JoinLeaveButtonProps> = ({
             await addParticipant(user_id, activity.activity_id)  
             onUpdateData()
             toaster.create({
-                description: `Joined ${activity.title}`,
+                description: `Joined ${activity.activity_id}:${activity.title}`,
                 type: "success",
             })
         } catch (error) {
@@ -54,7 +54,7 @@ const JoinLeaveButton : React.FC<JoinLeaveButtonProps> = ({
             await deleteParticipant(user_id, activity.activity_id)  
             onUpdateData()
             toaster.create({
-                description: `Left ${activity.title}`,
+                description: `Left ${activity.activity_id}:${activity.title}`,
                 type: "success",
             })
         } catch (error) {
