@@ -25,7 +25,6 @@ import ActivityDisplayCommentSection from "./ActivityDisplayCommentSection";
 import JoinLeaveButton from "./JoinLeaveButton";
 
 interface ActivityDisplayProps {
-    isOpen: boolean;
     activity: Activity;
     onClose: () => void;
     onUpdateData: () => void;
@@ -34,7 +33,6 @@ interface ActivityDisplayProps {
 }
 
 const ActivityDisplay : React.FC<ActivityDisplayProps> = ({
-    isOpen,
     activity,
     onClose,
     onUpdateData,
@@ -77,7 +75,7 @@ const ActivityDisplay : React.FC<ActivityDisplayProps> = ({
     }
 
     return (
-        <DialogRoot open={isOpen} size="xl">
+        <DialogRoot open={true} size="xl">
             <DialogBackdrop/>
             <DialogContent colorScheme="teal"
                 overflow="auto" maxH="80vh" 

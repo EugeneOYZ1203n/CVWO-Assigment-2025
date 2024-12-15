@@ -31,8 +31,7 @@ import { createActivity } from "../api/createActivity";
 import { updateActivity } from "../api/updateActivity";
 
 interface ActivityFormProps {
-    isOpen: boolean;
-    activity: Activity;
+    activity: Activity | null;
     onClose: () => void;
     onUpdateData: () => void;
     user_id: number; // The ID of the logged-in user
@@ -41,7 +40,6 @@ interface ActivityFormProps {
 const StyledAutoResize = chakra(AutoResize)
 
 const ActivityForm : React.FC<ActivityFormProps> = ({
-  isOpen,
   activity,
   onClose, 
   onUpdateData,
@@ -99,7 +97,7 @@ const ActivityForm : React.FC<ActivityFormProps> = ({
       await createActivity(newActivity, user_id) 
       onClose()
       toaster.create({
-          description: `Created ${newActivity.title}`,
+          description: `Created ${newActivity.activity_id}:${newActivity.title}`,
           type: "success",
       })
     } catch (error) {
@@ -115,7 +113,7 @@ const ActivityForm : React.FC<ActivityFormProps> = ({
       await updateActivity(newActivity) 
       onClose()
       toaster.create({
-          description: `Updated ${newActivity.title}`,
+          description: `Updated ${newActivity.activity_id}:${newActivity.title}`,
           type: "success",
       })
     } catch (error) {
@@ -128,7 +126,7 @@ const ActivityForm : React.FC<ActivityFormProps> = ({
   
   return (
     <>
-    <DialogRoot open={isOpen} size="xl">
+    <DialogRoot open={true} size="xl">
       <DialogBackdrop />
       <DialogContent colorScheme="teal" 
         overflow="auto" maxH="80vh" 

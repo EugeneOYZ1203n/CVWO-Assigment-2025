@@ -41,6 +41,13 @@ const AuthPage : React.FC<AuthPageProps> = ({
     }
   }
 
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault(); 
+      handleLogin()
+    }
+  };
+
   return (
     <Box minH="80vh" display="flex" alignItems="center" justifyContent="center">
       <VStack
@@ -65,6 +72,7 @@ const AuthPage : React.FC<AuthPageProps> = ({
             value={usernameInput}
             onChange={(e) => setUsernameInput(e.target.value)}
             focusRingColor="teal.500"
+            onKeyDown={handleKeyDown}
           />
         </Field>
         <Button onClick={handleLogin} variant="solid" colorPalette="teal"
