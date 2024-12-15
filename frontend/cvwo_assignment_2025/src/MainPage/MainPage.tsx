@@ -100,21 +100,23 @@ const MainPage : React.FC<MainPageProps> = ({username, user_id}) => {
         ) : (
             <>
             <Box zIndex={10} position="fixed" left={0} top={0} width="full">
-                {displayOpen && (ActivityDisplay != null ? (
-                    <ActivityDisplay 
+                {ActivityDisplay != null ? (
+                    <ActivityDisplay
+                    isOpen={displayOpen}
                     activity={modalActivity!} 
                     onClose={handleCloseDisplay} 
                     onUpdateData={refreshData}
                     onEdit={handleEditActivity}
                     user_id={user_id}/>
-                    ) : <Spinner alignSelf="center" colorPalette="teal"/>)}
-                {formOpen && (ActivityForm != null ? (
+                    ) : <Spinner alignSelf="center" colorPalette="teal"/>}
+                {ActivityForm != null ? (
                     <ActivityForm
+                    isOpen={formOpen}
                     activity={modalActivity!} 
                     onClose={handleCloseForm} 
                     onUpdateData={refreshData}
                     user_id={user_id}/>
-                    ) : <Spinner alignSelf="center" colorPalette="teal"/>)}
+                    ) : <Spinner alignSelf="center" colorPalette="teal"/>}
             </Box>
             <VStack align="stretch" w="full" p={4} spaceY={4}> 
                 <Topbar username={username} onAddActivity={handleAddActivity} />

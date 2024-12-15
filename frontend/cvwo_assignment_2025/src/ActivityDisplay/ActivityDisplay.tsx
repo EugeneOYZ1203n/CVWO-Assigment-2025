@@ -25,6 +25,7 @@ import ActivityDisplayCommentSection from "./ActivityDisplayCommentSection";
 import JoinLeaveButton from "./JoinLeaveButton";
 
 interface ActivityDisplayProps {
+    isOpen: boolean;
     activity: Activity;
     onClose: () => void;
     onUpdateData: () => void;
@@ -33,6 +34,7 @@ interface ActivityDisplayProps {
 }
 
 const ActivityDisplay : React.FC<ActivityDisplayProps> = ({
+    isOpen,
     activity,
     onClose,
     onUpdateData,
@@ -75,16 +77,27 @@ const ActivityDisplay : React.FC<ActivityDisplayProps> = ({
     }
 
     return (
-        <DialogRoot open={true} size="xl">
+        <DialogRoot open={isOpen} size="xl">
             <DialogBackdrop/>
             <DialogContent colorScheme="teal"
                 overflow="auto" maxH="80vh" 
                 css={{
-                // Hide scrollbar while keeping scrolling functional
-                scrollbarWidth: "none", // For Firefox
-                "-ms-overflow-style": "none", // For IE and Edge
-                "&::-webkit-scrollbar": {
-                    display: "none", // For Chrome, Safari, and Edge
+                "::-webkit-scrollbar": {
+                    width: "8px", // Set the scrollbar width
+                    height: "8px", // Set the scrollbar height for horizontal scrolling
+                },
+                "::-webkit-scrollbar-thumb": {
+                    backgroundColor: "teal.500", // Chakra theme color
+                    borderRadius: "4px",
+                    border: "2px solid transparent", // Optional: Space around the thumb
+                    backgroundClip: "content-box",
+                },
+                "::-webkit-scrollbar-thumb:hover": {
+                    backgroundColor: "teal.700", // Darker shade on hover
+                },
+                "::-webkit-scrollbar-track": {
+                    backgroundColor: "gray.200", // Track background color
+                    borderRadius: "4px",
                 },
             }}>
                 <DialogHeader>

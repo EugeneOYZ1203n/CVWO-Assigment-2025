@@ -33,7 +33,7 @@ const DeleteActivityPopover : React.FC<DeleteActivityPopoverProps> = ({
             })
         } catch (error) {
             toaster.create({
-                description: `Failed to delete ${activity.title}`,
+                description: `Failed to delete ${activity.title}: ${error}`,
                 type: "error",
             })
         }

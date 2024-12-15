@@ -18,6 +18,10 @@ const AuthPage : React.FC<AuthPageProps> = ({
 
   const handleLogin = async () => {
     try {
+      if (usernameInput.length > 300) { 
+        throw new Error("Username too long!")
+      }
+
       const data : {user_id : number} = await createUserAndGetUserID(usernameInput)
 
       setUsername(usernameInput)
@@ -31,7 +35,7 @@ const AuthPage : React.FC<AuthPageProps> = ({
       navigate("/");
     } catch (error) {
       toaster.create({
-          description: `Failed to log in as ${usernameInput}`,
+          description: `Failed to log in as ${usernameInput}: ${error}`,
           type: "error",
       })
     }
@@ -52,7 +56,10 @@ const AuthPage : React.FC<AuthPageProps> = ({
         <Text fontSize="2xl" fontWeight="bold" color="teal.600">
           Welcome to Your Hangout Hub!
         </Text>
-        <Field label="What is your name?" color="gray.800">
+        <Field label="What is your name?" color="gray.800"
+          invalid={usernameInput.length > 100}
+          errorText="Username cannot be longer than 100 characters"
+        >
           <Input
             placeholder="Username"
             value={usernameInput}
@@ -60,7 +67,9 @@ const AuthPage : React.FC<AuthPageProps> = ({
             focusRingColor="teal.500"
           />
         </Field>
-        <Button onClick={handleLogin} variant="solid" colorPalette="teal">
+        <Button onClick={handleLogin} variant="solid" colorPalette="teal"
+          disabled={usernameInput.length > 100}
+        >
           Enter
         </Button>
       </VStack>

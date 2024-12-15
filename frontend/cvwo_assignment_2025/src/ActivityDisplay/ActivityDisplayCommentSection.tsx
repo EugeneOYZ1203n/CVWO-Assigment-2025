@@ -23,6 +23,12 @@ const ActivityDisplayCommentSection:React.FC<ActivityDisplayCommentSectionProps>
 
     const handleAddComment = async () => {
         try {
+            if (commentText == "") {
+                throw new Error("Comment cannot be empty!")
+            } else if (commentText.length > 300) {
+                throw new Error("Comment cannot be more than 300 characters!")
+            }
+
             await addComment(user_id, commentText, activity.activity_id); 
             setCommentText(''); 
             onUpdateData();
@@ -32,7 +38,7 @@ const ActivityDisplayCommentSection:React.FC<ActivityDisplayCommentSectionProps>
             })
         } catch (error) {
             toaster.create({
-                description: "Failed to add Comment",
+                description: `Failed to add Comment: ${error}`,
                 type: "error",
             })
         }
@@ -48,7 +54,11 @@ const ActivityDisplayCommentSection:React.FC<ActivityDisplayCommentSectionProps>
     return (
         <>
         <HStack marginTop={8}>
-        <Field width="5/6" >
+        <Field 
+            width="5/6" 
+            errorText="Comment cannot be more than 300 characters!" 
+            invalid={commentText.length > 300}
+        >
             <Input 
                 value={commentText}
                 onChange={(e) => setCommentText(e.target.value)}

@@ -43,7 +43,7 @@ const JoinLeaveButton : React.FC<JoinLeaveButtonProps> = ({
             })
         } catch (error) {
             toaster.create({
-                description: `Failed to join ${activity.title}`,
+                description: `Failed to join ${activity.title}: ${error}`,
                 type: "error",
             })
         }
@@ -59,7 +59,7 @@ const JoinLeaveButton : React.FC<JoinLeaveButtonProps> = ({
             })
         } catch (error) {
             toaster.create({
-                description: `Failed to leave ${activity.title}`,
+                description: `Failed to leave ${activity.title}: ${error}`,
                 type: "error",
             })
         }

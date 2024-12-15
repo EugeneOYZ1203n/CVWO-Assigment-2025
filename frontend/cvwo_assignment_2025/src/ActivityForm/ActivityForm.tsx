@@ -31,6 +31,7 @@ import { createActivity } from "../api/createActivity";
 import { updateActivity } from "../api/updateActivity";
 
 interface ActivityFormProps {
+    isOpen: boolean;
     activity: Activity;
     onClose: () => void;
     onUpdateData: () => void;
@@ -40,6 +41,7 @@ interface ActivityFormProps {
 const StyledAutoResize = chakra(AutoResize)
 
 const ActivityForm : React.FC<ActivityFormProps> = ({
+  isOpen,
   activity,
   onClose, 
   onUpdateData,
@@ -60,9 +62,9 @@ const ActivityForm : React.FC<ActivityFormProps> = ({
   const styles = recipe({ size: "sm" })
 
   const isValidTitle = title != "" && title.length < 100
-  const isValidDescription = description != "" && description.trim().split(/\s+/).length < 1000
+  const isValidDescription = description != "" && description.length < 2000 && description.trim().split(/\s+/).length < 300
   const isValidDates = new Date(endDate).getTime() >= new Date(startDate).getTime()
-  const isValidLocation = location != ""
+  const isValidLocation = location != "" && location.length < 100
   const isValidMaxParticipants = maxParticipants > 0 && maxParticipants <= 50
 
   const handleSubmission = () => {
@@ -102,7 +104,7 @@ const ActivityForm : React.FC<ActivityFormProps> = ({
       })
     } catch (error) {
       toaster.create({
-          description: `Failed to create ${newActivity.title}`,
+          description: `Failed to create ${newActivity.title}: ${error}`,
           type: "error",
       })
     }
@@ -118,7 +120,7 @@ const ActivityForm : React.FC<ActivityFormProps> = ({
       })
     } catch (error) {
       toaster.create({
-          description: `Failed to update ${newActivity.title}`,
+          description: `Failed to update ${newActivity.title}: ${error}`,
           type: "error",
       })
     }
@@ -126,16 +128,27 @@ const ActivityForm : React.FC<ActivityFormProps> = ({
   
   return (
     <>
-    <DialogRoot open={true} size="xl">
+    <DialogRoot open={isOpen} size="xl">
       <DialogBackdrop />
       <DialogContent colorScheme="teal" 
         overflow="auto" maxH="80vh" 
         css={{
-          // Hide scrollbar while keeping scrolling functional
-          scrollbarWidth: "none", // For Firefox
-          "-ms-overflow-style": "none", // For IE and Edge
-          "&::-webkit-scrollbar": {
-              display: "none", // For Chrome, Safari, and Edge
+          "::-webkit-scrollbar": {
+            width: "8px", // Set the scrollbar width
+            height: "8px", // Set the scrollbar height for horizontal scrolling
+          },
+          "::-webkit-scrollbar-thumb": {
+            backgroundColor: "teal.500", // Chakra theme color
+            borderRadius: "4px",
+            border: "2px solid transparent", // Optional: Space around the thumb
+            backgroundClip: "content-box",
+          },
+          "::-webkit-scrollbar-thumb:hover": {
+            backgroundColor: "teal.700", // Darker shade on hover
+          },
+          "::-webkit-scrollbar-track": {
+            backgroundColor: "gray.200", // Track background color
+            borderRadius: "4px",
           },
       }}>
         <DialogHeader>
@@ -157,7 +170,7 @@ const ActivityForm : React.FC<ActivityFormProps> = ({
 
           <Field label="Description" 
             invalid={!isValidDescription} 
-            errorText={description ? "Description should be less than 1000 words!" : "Description cannot be empty!"}>
+            errorText={description ? "Description should be less than 2000 characters and 300 words!" : "Description cannot be empty!"}>
             <StyledAutoResize
               placeholder="Description goes here"
               minH="initial"
@@ -171,45 +184,6 @@ const ActivityForm : React.FC<ActivityFormProps> = ({
           </Field>
 
           <SimpleGrid columns={3} gap={2} width="full">
-          <Field label="Start Date">
-            <DateSelector 
-              selectedDate={startDate}
-              setSelectedDate={setStartDate}
-            />
-          </Field>
-
-          <Field label="End Date" 
-            invalid={!isValidDates} 
-            errorText="End Date should be after Start Date">
-            <DateSelector 
-              selectedDate={endDate}
-              setSelectedDate={setEndDate}
-            />
-          </Field>
-
-          <Field label="Location"
-            invalid={!location} errorText="Location cannot be empty!"
-          >
-            <Input 
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                placeholder="Location goes here"
-                size="md"
-            />
-          </Field>
-
-          <Field label="Max Participants">
-            <NumberInputRoot 
-              defaultValue="4" 
-              min={1} max={50}
-              value={maxParticipants.toString()}
-              onValueChange={(e) => setMaxParticipants(Number(e.value))}
-              width="full"
-            >
-              <NumberInputField/>
-            </NumberInputRoot>
-          </Field>
-
           <Field label="Categories">
             <SelectRoot 
                 value={[category]}
@@ -248,6 +222,44 @@ const ActivityForm : React.FC<ActivityFormProps> = ({
             </SelectRoot>
           </Field>
 
+          <Field label="Start Date">
+            <DateSelector 
+              selectedDate={startDate}
+              setSelectedDate={setStartDate}
+            />
+          </Field>
+
+          <Field label="End Date" 
+            invalid={!isValidDates} 
+            errorText="End Date should be after Start Date">
+            <DateSelector 
+              selectedDate={endDate}
+              setSelectedDate={setEndDate}
+            />
+          </Field>
+
+          <Field label="Location"
+            invalid={!location} errorText={location ? "Location should be less than 100 characters!" : "Location cannot be empty!"}
+          >
+            <Input 
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                placeholder="Location goes here"
+                size="md"
+            />
+          </Field>
+
+          <Field label="Max Participants">
+            <NumberInputRoot 
+              defaultValue="4" 
+              min={1} max={50}
+              value={maxParticipants.toString()}
+              onValueChange={(e) => setMaxParticipants(Number(e.value))}
+              width="full"
+            >
+              <NumberInputField/>
+            </NumberInputRoot>
+          </Field>
           </SimpleGrid>
 
           </VStack>
