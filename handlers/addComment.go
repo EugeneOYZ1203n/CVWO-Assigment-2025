@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/EugeneOYZ1203n/CVWO-Assigment-2025/sqldb"
 	"github.com/gofiber/fiber/v2"
@@ -32,7 +33,9 @@ func AddComment(c *fiber.Ctx) error {
 		})
 	}
 
-	if req.UserID <= 0 || req.CommentBody == "" {
+	if req.UserID <= 0 ||
+		strings.TrimSpace(req.CommentBody) == "" ||
+		len(req.CommentBody) > 300 {
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
 			"error": "Invalid input data",
 		})

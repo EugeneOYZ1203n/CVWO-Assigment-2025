@@ -3,6 +3,7 @@ package handlers
 import (
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/EugeneOYZ1203n/CVWO-Assigment-2025/sqldb"
 	"github.com/go-sql-driver/mysql"
@@ -22,9 +23,15 @@ func CreateUser(c *fiber.Ctx) error {
 		})
 	}
 
-	if req.Username == "" {
+	if strings.TrimSpace(req.Username) == "" {
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
 			"error": "Username is required",
+		})
+	}
+
+	if len(req.Username) > 100 {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"error": "Username is cannot be more than 100 characters",
 		})
 	}
 

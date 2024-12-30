@@ -18,8 +18,12 @@ const AuthPage : React.FC<AuthPageProps> = ({
 
   const handleLogin = async () => {
     try {
-      if (usernameInput.length > 300) { 
+      if (usernameInput.length > 100) { 
         throw new Error("Username too long!")
+      }
+
+      if (usernameInput.trim().length == 0) { 
+        throw new Error("Username cannot be whitespace!")
       }
 
       const data : {user_id : number} = await createUserAndGetUserID(usernameInput)

@@ -59,10 +59,10 @@ const ActivityForm : React.FC<ActivityFormProps> = ({
   const recipe = useRecipe({ key: "textarea" })
   const styles = recipe({ size: "sm" })
 
-  const isValidTitle = title != "" && title.length < 100
-  const isValidDescription = description != "" && description.length < 2000 && description.trim().split(/\s+/).length < 300
+  const isValidTitle = title.trim().length > 0 && title.length < 100
+  const isValidDescription = description.trim().length > 0 && description.length < 2000 && description.trim().split(/\s+/).length < 300
   const isValidDates = new Date(endDate).getTime() >= new Date(startDate).getTime()
-  const isValidLocation = location != "" && location.length < 100
+  const isValidLocation = location.trim().length > 0 && location.length < 100
   const isValidMaxParticipants = maxParticipants > 0 && maxParticipants <= 50
 
   const handleSubmission = () => {
@@ -131,23 +131,22 @@ const ActivityForm : React.FC<ActivityFormProps> = ({
       <DialogContent colorScheme="teal" 
         overflow="auto" maxH="80vh" 
         css={{
-          "::-webkit-scrollbar": {
-            width: "8px", // Set the scrollbar width
-            height: "8px", // Set the scrollbar height for horizontal scrolling
+          "&::-webkit-scrollbar": {
+            width: "10px",
           },
-          "::-webkit-scrollbar-thumb": {
-            backgroundColor: "teal.500", // Chakra theme color
-            borderRadius: "4px",
-            border: "2px solid transparent", // Optional: Space around the thumb
-            backgroundClip: "content-box",
+          "&::-webkit-scrollbar-track": {
+            background: "#f1f1f1",
           },
-          "::-webkit-scrollbar-thumb:hover": {
-            backgroundColor: "teal.700", // Darker shade on hover
+          "&::-webkit-scrollbar-thumb": {
+            background: "teal",
+            borderRadius: "8px",
           },
-          "::-webkit-scrollbar-track": {
-            backgroundColor: "gray.200", // Track background color
-            borderRadius: "4px",
+          "&::-webkit-scrollbar-thumb:hover": {
+            background: "teal.700",
           },
+          // For Firefox
+          scrollbarWidth: "thin",
+          scrollbarColor: "teal #f1f1f1",
       }}>
         <DialogHeader>
           <Text fontSize="2xl" fontWeight="bold" color="teal.500">{isEdit ? "Edit Activity" : "Add activity"}</Text>
@@ -157,7 +156,7 @@ const ActivityForm : React.FC<ActivityFormProps> = ({
           <VStack spaceY={2}>
           <Field label="Title" 
             invalid={!isValidTitle} 
-            errorText={title ? "Title should be less than 100 characters!" : "Title cannot be empty!"}>
+            errorText={title.trim().length > 0 ? "Title should be less than 100 characters!" : "Title cannot be empty!"}>
             <Input 
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
@@ -168,7 +167,7 @@ const ActivityForm : React.FC<ActivityFormProps> = ({
 
           <Field label="Description" 
             invalid={!isValidDescription} 
-            errorText={description ? "Description should be less than 2000 characters and 300 words!" : "Description cannot be empty!"}>
+            errorText={description.trim().length > 0 ? "Description should be less than 2000 characters and 300 words!" : "Description cannot be empty!"}>
             <StyledAutoResize
               placeholder="Description goes here"
               minH="initial"
@@ -221,7 +220,8 @@ const ActivityForm : React.FC<ActivityFormProps> = ({
           </Field>
 
           <Field label="Location"
-            invalid={!isValidLocation} errorText={location ? "Location should be less than 100 characters!" : "Location cannot be empty!"}
+            invalid={!isValidLocation} 
+            errorText={location.trim().length > 0 ? "Location should be less than 100 characters!" : "Location cannot be empty!"}
           >
             <Input 
                 value={location}

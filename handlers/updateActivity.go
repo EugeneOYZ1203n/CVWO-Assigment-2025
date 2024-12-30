@@ -3,6 +3,7 @@ package handlers
 import (
 	"log"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/EugeneOYZ1203n/CVWO-Assigment-2025/models"
@@ -37,9 +38,25 @@ func UpdateActivity(c *fiber.Ctx) error {
 		})
 	}
 
-	if req.Title == "" || req.StartDate.IsZero() || req.EndDate.IsZero() || req.MaxParticipants <= 0 {
+	isInvalidTitle := strings.TrimSpace(req.Title) == "" ||
+		len(req.Title) > 100
+	isInvalidDescription := strings.TrimSpace(req.Description) == "" ||
+		len(req.Description) > 2000
+	isInvalidDates := req.StartDate.IsZero() ||
+		req.EndDate.IsZero() ||
+		req.EndDate.After(req.StartDate)
+	isInvalidLocation := strings.TrimSpace(req.Location) == "" ||
+		len(req.Location) > 100
+	isInvalidMaxParticipants := req.MaxParticipants <= 0 ||
+		req.MaxParticipants > 50
+
+	if isInvalidTitle ||
+		isInvalidDescription ||
+		isInvalidDates ||
+		isInvalidLocation ||
+		isInvalidMaxParticipants {
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
-			"error": "Missing required fields",
+			"error": "Invalid inputs",
 		})
 	}
 
