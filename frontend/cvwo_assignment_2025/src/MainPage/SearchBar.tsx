@@ -57,12 +57,12 @@ const SearchBar : React.FC<SearchBarProps> = ({
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 size="md"
-                width="80%"
+                width="100%"
                 borderColor="teal.500"
                 _hover={{ borderColor: "teal.700" }}
             />
             
-            <HStack align="stretch" width="80%">
+            <HStack align="stretch" width="100%">
             <Box width="1/4">
             <SelectRoot 
                 value={[sortBy]}

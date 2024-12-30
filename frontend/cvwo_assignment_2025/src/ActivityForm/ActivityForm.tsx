@@ -126,7 +126,7 @@ const ActivityForm : React.FC<ActivityFormProps> = ({
   
   return (
     <>
-    <DialogRoot open={true} onInteractOutside={onClose} size="xl">
+    <DialogRoot open={true} size="xl">
       <DialogBackdrop />
       <DialogContent colorScheme="teal" 
         overflow="auto" maxH="80vh" 

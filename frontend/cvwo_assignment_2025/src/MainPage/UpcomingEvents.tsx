@@ -81,7 +81,9 @@ const UpcomingEvents : React.FC<UpcomingEventsProps> = ({
                     },
                 }}
             >
-            <HStack spaceX={-2} align="stretch" divideX="1px" divideColor="teal.500">
+            <HStack spaceX={-2} align="stretch" divideX="1px" divideColor="teal.500"
+                transform={{base: "scale(0.75)", md: "scale(1)"}}
+            >
                 {filteredActivities.map((activity) => (
                     <Box
                         key={activity.activity_id}

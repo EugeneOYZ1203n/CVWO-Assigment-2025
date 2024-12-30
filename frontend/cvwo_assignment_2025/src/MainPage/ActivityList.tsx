@@ -20,6 +20,7 @@ const ActivityList : React.FC<ActivityListProps> = ({
           align="stretch"
           width="full" 
           spaceY={4}
+          p={4}
       >
       {activities.map((activity) => {
           return (

@@ -110,12 +110,6 @@ const MainPage : React.FC<MainPageProps> = ({username, user_id}) => {
                 display="flex"
                 alignItems="center"
                 justifyContent="center"
-                transform={{
-                    base: "scale(0.75)",  // Applies to screens 0px and up
-                    md: "scale(1)",      // Applies to screens 768px and up
-                }}
-                transformOrigin="top center" // Ensures scaling starts from the top-left
-                overflow="hidden" // Prevents accidental overflow
             >
                 {displayOpen && (ActivityDisplay != null ? (
                     <ActivityDisplay 
@@ -133,14 +127,7 @@ const MainPage : React.FC<MainPageProps> = ({username, user_id}) => {
                     user_id={user_id}/>
                     ) : <Spinner alignSelf="center" colorPalette="teal"/>)}
             </Box>} 
-            <Box 
-                transform={{
-                    base: "scale(0.75)",  // Applies to screens 0px and up
-                    md: "scale(1)",      // Applies to screens 768px and up
-                }}
-                transformOrigin="top center" // Ensures scaling starts from the top-left
-                overflow="hidden" // Prevents accidental overflow
-            >
+            
             <VStack align="stretch" w="full" p={4} spaceY={4}> 
                 <Topbar username={username} onAddActivity={handleAddActivity} />
                 <UpcomingEvents activities={activities}/>
@@ -149,7 +136,6 @@ const MainPage : React.FC<MainPageProps> = ({username, user_id}) => {
                     <ActivityList activities={searchActivities} participated={participated} onCardClick={handleOpenDisplay}/>
                 </Suspense>
             </VStack>
-            </Box>
             </>
         )}
         </Box>
