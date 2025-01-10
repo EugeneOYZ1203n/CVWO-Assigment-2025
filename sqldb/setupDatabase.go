@@ -15,25 +15,21 @@ import (
 var DB *sql.DB
 
 func getDatabaseURL() string {
-	// Get the JAWSDB_URL environment variable
 	dbURL := os.Getenv("DB_URL")
 	if dbURL == "" {
 		log.Fatal("DB_URL environment variable not set")
 	}
 
-	// Parse the URL
 	u, err := url.Parse(dbURL)
 	if err != nil {
 		log.Fatalf("Error parsing DB_URL: %v", err)
 	}
 
-	// Extract credentials
 	user := u.User.Username()
 	password, _ := u.User.Password()
 	host := u.Host
 	database := u.Path[1:] // Remove leading "/"
 
-	// Format as MySQL DSN (Data Source Name)
 	return fmt.Sprintf("%s:%s@tcp(%s)/%s?parseTime=true", user, password, host, database)
 }
 

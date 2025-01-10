@@ -9,9 +9,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// ValidateActivityID checks if the activity ID exists in the database
 func ValidateActivityID(c *fiber.Ctx) error {
-	// Parse activity ID from route parameter
 	activityID, err := strconv.Atoi(c.Params("id"))
 	if err != nil || activityID <= 0 {
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
@@ -19,7 +17,6 @@ func ValidateActivityID(c *fiber.Ctx) error {
 		})
 	}
 
-	// Check if the activity exists in the database
 	var exists bool
 	query := `SELECT EXISTS(SELECT 1 FROM activities WHERE activity_id = ?)`
 	err = sqldb.DB.QueryRow(query, activityID).Scan(&exists)
@@ -30,13 +27,11 @@ func ValidateActivityID(c *fiber.Ctx) error {
 		})
 	}
 
-	// If activity doesn't exist, return 404
 	if !exists {
 		return c.Status(http.StatusNotFound).JSON(fiber.Map{
 			"error": "Activity not found",
 		})
 	}
 
-	// Activity exists, continue to the next middleware/handler
 	return c.Next()
 }

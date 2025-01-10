@@ -19,7 +19,7 @@ func main() {
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "4000" // Default to 3000 if running locally
+		port = "4000"
 	}
 
 	log.Fatal(app.Listen(":" + port))
